@@ -1,7 +1,7 @@
 [project]
-name = "plainlogger"
-version = "0.1.0"
+name = "vitalogger"
+version = "0.1.2"
 description = "A simple logger library for python"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.10"
 dependencies = []
