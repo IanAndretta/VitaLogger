@@ -45,14 +45,16 @@ class Logger():
         self.logger_folder = logger_folder
         self.include_time = include_time
         self.include_level = include_level
+        self.use_log_folder = False
         
         #Creates a log folder if its gone
-        try: makedirs(logger_folder)
-        except FileExistsError: pass
+        if self.use_log_folder:
+            try: makedirs(logger_folder)
+            except FileExistsError: pass
         
-        #Creates a file with the numbers of files in logs folder    
-        with open(self.logger_folder + "/log" + str(len(listdir(self.logger_folder))) + ".log", "a") as file:
-            file.write(f"[{strftime("%H:%M:%S")}] [INFO] Log Created\n")
+            #Creates a file with the numbers of files in logs folder    
+            with open(self.logger_folder + "/log" + str(len(listdir(self.logger_folder))) + ".log", "a") as file:
+                file.write(f"[{strftime("%H:%M:%S")}] [INFO] Log Created\n")
     
     
     def log(self, msg : str, logger_level : LoggerLevel):
@@ -68,5 +70,6 @@ class Logger():
         print(output)
         
         #Appends the output to the log.txt
-        with open(self.logger_folder + "/log" + str(len(listdir(self.logger_folder)) -1) + ".log", "a") as file:
-            file.write(output.replace(logger_level.color, "").replace("\033[0m", "") + "\n")
+        if self.use_log_folder:
+            with open(self.logger_folder + "/log" + str(len(listdir(self.logger_folder)) -1) + ".log", "a") as file:
+                file.write(output.replace(logger_level.color, "").replace("\033[0m", "") + "\n")
