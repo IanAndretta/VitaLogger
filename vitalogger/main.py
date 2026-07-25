@@ -45,31 +45,37 @@ class Logger():
         self.logger_folder = logger_folder
         self.include_time = include_time
         self.include_level = include_level
-        self.use_log_folder = False
+
+        self.use_log_folder = True
+        self.time_format = strftime("%H:%M:%S")
+        self.reset_color = "\033[0m"
+        self.print_to_console = True
         
         #Creates a log folder if its gone
         if self.use_log_folder:
+            print(f"Creating log folder at {self.logger_folder}")
             try: makedirs(logger_folder)
             except FileExistsError: pass
         
-            #Creates a file with the numbers of files in logs folder    
+            #Creates a log with correct version number
             with open(self.logger_folder + "/log" + str(len(listdir(self.logger_folder))) + ".log", "a") as file:
-                file.write(f"[{strftime("%H:%M:%S")}] [INFO] Log Created\n")
+                file.write(f"[{self.time_format}] [INFO] Log Created\n")
     
     
     def log(self, msg : str, logger_level : LoggerLevel):
         output = ""
         
         if self.include_time: 
-            output += f"{logger_level.color}[{strftime("%H:%M:%S")}] "
+            output += f"{logger_level.color}[{self.time_format}] "
         
         if self.include_level: 
             output += f"{logger_level.color}[{logger_level.name}] "
-        
-        output += logger_level.color + msg + "\033[0m"
-        print(output)
+
+        #Appends the message to the output
+        output += logger_level.color + msg + self.reset_color
+        if self.print_to_console: print(output)
         
         #Appends the output to the log.txt
         if self.use_log_folder:
             with open(self.logger_folder + "/log" + str(len(listdir(self.logger_folder)) -1) + ".log", "a") as file:
-                file.write(output.replace(logger_level.color, "").replace("\033[0m", "") + "\n")
+                file.write(output.replace(logger_level.color, "").replace(self.reset_color, "") + "\n")
