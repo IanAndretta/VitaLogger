@@ -1,4 +1,5 @@
 Plain Logger is a simple logger library for python
+Install at https://pypi.org/project/vitalogger/
 
 Example:
 logger = Logger(logger_folder="my_logs_folder", include_time = True, include_level = True)
