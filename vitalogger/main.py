@@ -50,7 +50,7 @@ class Logger():
         self.compress_files = compress_files
 
         self.use_log_folder = True
-        self.time_format = strftime("%H:%M:%S")
+        self.time_format = "%H:%M:%S"
         self.reset_color = "\033[0m"
         self.print_to_console = True
         self.log_name = "/log"
@@ -76,14 +76,14 @@ class Logger():
             #Creates a log with correct version number
             self.increaseLogVersion()
             with open(self.logger_folder + self.log_name + str(log_version) + ".log", "a") as file:
-                file.write(f"[{self.time_format}] [INFO] Log Created\n")
+                file.write(f"[{self.getTime()}] [INFO] Log Created\n")
 
 
     def log(self, msg : str, logger_level : LoggerLevel):
         output = ""
 
         if self.include_time: 
-            output += f"{logger_level.color}[{self.time_format}] "
+            output += f"{logger_level.color}[{self.getTime()}] "
 
         if self.include_level: 
             output += f"{logger_level.color}[{logger_level.name}] "
@@ -118,3 +118,7 @@ class Logger():
         current_version = self.getLogVersion()
         with open(self.logger_folder + "/logversion", "w") as file:
             file.write(str(current_version + 1))
+    
+    
+    def getTime(self):
+        return strftime(self.time_format)
